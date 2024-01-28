@@ -4,6 +4,9 @@ local T1 = wndw:Tab("Main")
 local T2 = wndw:Tab("Server Manipulator")
 local T3 = wndw:Tab("Fight - BETA")
 local T4 = wndw:Tab("Orb - Instant collect")
+local T5 = wndw:Tab("OP Pet Giver")
+local T6 = wndw:Tab("Credit")
+
 local workspace = game:GetService("Workspace")
 local user = game.Players.LocalPlayer
 
@@ -116,14 +119,25 @@ T2:Toggle("Power giver [ X1000 ]",false,function(value)
     end
 end)
 
+T5:Button("Hatch event egg [ X100 ]",function()
+    game:GetService("ReplicatedStorage")["Events"]["AddValueToTable"]:FireServer({},"Pets","Event",100,true)
+end)
+
+T5:Button("Hatch dominus egg [ X100 ]",function()
+    game:GetService("ReplicatedStorage")["Events"]["AddValueToTable"]:FireServer({},"Pets","Dominus",100,true)
+end)
+
+T6:Label("Feature, UI modded & Dev : Fahri")
+T6:Label("Hook caller & Hook function : Akbar")
+T6:Label("Tester : Fairus & Zaki")
+T6:Label("Obfuscator : Fahri & Farhan")
+T6:Label("Ty for using our script!\nfollow my tiktok account @capviktor")
+
 lib:HookFunction(function(method,self,args) -- Script to get server caller
     fight.a = args[2]
     fight.b = args[3]
     fight.c = args[4]
 end)
-
---game:GetService("ReplicatedStorage")["Events"]["HatchEgg"]:FireServer(1,"Dominus")
---game:GetService("ReplicatedStorage")["Events"]["CanOpenEgg"]:InvokeServer("Dominus",1)
 
 lib:HookCalled(function(self,args)
      if self.Name == "CanOpenEgg" and args[1] == "Dominus" then
@@ -131,6 +145,9 @@ lib:HookCalled(function(self,args)
         return self.InvokeServer(self,unpack(args))
     elseif self.Name == "HatchEgg" and args[2] == "Dominus" then
         args[1] = 1
+        return self.FireServer(self,unpack(args))
+    elseif self.Name == "UpdateIndex" and args[1] == "Event" then
+        args[2] = "Mythical"
         return self.FireServer(self,unpack(args))
     end
 end)
