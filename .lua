@@ -1,8 +1,11 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sidhsksjsjsh/VAPE-UI-MODDED/main/.lua"))()
-local wndw = lib:Window("VIP Turtle Hub V4 - Best & Secured script by Fahri")
+local wndw = lib:Window("VIP Turtle Hub V4 - The best & Secured script by Fahri")
 local T1 = wndw:Tab("Main")
 local T2 = wndw:Tab("Server Manipulator")
 local T3 = wndw:Tab("Fight - BETA")
+local T4 = wndw:Tab("Orb - Instant collect")
+local workspace = game:GetService("Workspace")
+local user = game.Players.LocalPlayer
 
 local fight = {
   af = "Start",
@@ -10,6 +13,30 @@ local fight = {
   b = 0,
   c = nil
 }
+
+local function bringOrb(str)
+  for i,v in pairs(workspace:GetChildren()) do
+    if v.Name == tostring(str) then
+      v.Position = user.Character.HumanoidRootPart.Position
+    end
+  end
+end
+
+T4:Dropdown("Select orb",{"Power","Gem"},function(value)
+    _G.orbs = value
+end)
+
+T4:Toggle("Instant bring [ Loop ]",false,function(value)
+    _G.corb = value
+    while wait() do
+      if _G.corb == false then break end
+      bringOrb(_G.orbs)
+    end
+end)
+
+T4:Button("Instant bring",function()
+    bringOrb(_G.orbs)
+end)
 
 T1:Toggle("Auto click",false,function(value)
     _G.beam = value
@@ -48,27 +75,28 @@ T2:Button("2X Power giver [ X10 ]",function()
     game:GetService("ReplicatedStorage")["Boosts"]["SpinRewards"]:FireServer("2x Power",10)
 end)
 
-T2:Button("2X Wins giver [ X10 ]",function()
+--[[T2:Button("2X Wins giver [ X10 ]",function()
     game:GetService("ReplicatedStorage")["Boosts"]["SpinRewards"]:FireServer("2x Win",10)
 end)
+]]
 
 T2:Button("2X Luck giver [ X10 ]",function()
-    game:GetService("ReplicatedStorage")["Boosts"]["SpinRewards"]:FireServer("2x Luck",10)
-end)
-
-T2:Toggle("Wins giver [ X50 ]",false,function(value)
-    _G.wg1 = value
-    while wait() do
-      if _G.wg1 == false then break end
-      game:GetService("ReplicatedStorage")["Boosts"]["PlaytimeReward"]:FireServer("Wins",50)
-    end
+    game:GetService("ReplicatedStorage")["Boosts"]["SpinRewards"]:FireServer("Luck",10)
 end)
 
 T2:Toggle("Wins giver [ X100 ]",false,function(value)
+    _G.wg1 = value
+    while wait() do
+      if _G.wg1 == false then break end
+      game:GetService("ReplicatedStorage")["Boosts"]["PlaytimeReward"]:FireServer("Wins",100)
+    end
+end)
+
+T2:Toggle("Wins giver [ X50K ]",false,function(value)
     _G.wg2 = value
     while wait() do
       if _G.wg2 == false then break end
-      game:GetService("ReplicatedStorage")["Boosts"]["PlaytimeReward"]:FireServer("Wins",100)
+      game:GetService("ReplicatedStorage")["Boosts"]["PlaytimeReward"]:FireServer("Wins",50000)
     end
 end)
 
@@ -92,4 +120,15 @@ lib:HookFunction(function(method,self,args) -- Script to get server caller
     fight.a = args[2]
     fight.b = args[3]
     fight.c = args[4]
+end)
+
+--game:GetService("ReplicatedStorage")["Events"]["HatchEgg"]:FireServer(1,"Dominus")
+--game:GetService("ReplicatedStorage")["Events"]["CanOpenEgg"]:InvokeServer("Dominus",1)
+
+lib:HookCalled(function(self,args)
+     if self == "CanOpenEgg" and args[1] == "Dominus" then
+        args[2] = 1
+    elseif self == "HatchEgg" and args[2] == "Dominus" then
+        args[1] = 1
+    end
 end)
