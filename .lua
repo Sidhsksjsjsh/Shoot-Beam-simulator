@@ -126,9 +126,11 @@ end)
 --game:GetService("ReplicatedStorage")["Events"]["CanOpenEgg"]:InvokeServer("Dominus",1)
 
 lib:HookCalled(function(self,args)
-     if self == "CanOpenEgg" and args[1] == "Dominus" then
+     if self.Name == "CanOpenEgg" and args[1] == "Dominus" then
         args[2] = 1
-    elseif self == "HatchEgg" and args[2] == "Dominus" then
+        return self.InvokeServer(self,unpack(args))
+    elseif self.Name == "HatchEgg" and args[2] == "Dominus" then
         args[1] = 1
+        return self.FireServer(self,unpack(args))
     end
 end)
